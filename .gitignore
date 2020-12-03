@@ -1,0 +1,9 @@
+/dist/
+/build/
+/.git/
+/target/
+/bin/
+/.settings/
+/.classpath
+/.project
+/pasltime.jardesc

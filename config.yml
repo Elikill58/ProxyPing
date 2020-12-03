@@ -1,0 +1,19 @@
+# The plugin will choose one of the MOTD, randomly.
+motd:
+- "&eAn MOTD"
+- "&aTwo\n&eLines"
+- "&cCannot do 3"
+# The protocol is this: http://prntscr.com/suu98b
+# The "Spigot 1.15.2" on the TOP right when you have older version
+protocol: "&aWelcome there (%online%/%maxplayer%)"
+# Virtual max player (Don't change the bungee config)
+max_players: 400
+# Text lines showed when you put your mouse hover the protocol, you see:
+# http://prntscr.com/suu9rd
+Sample:
+- "&aWelcome here !"
+- " "
+- "&7&lSite"
+- "  &6my.site"
+- "  "
+- "&a» %online% joueurs connectés"
