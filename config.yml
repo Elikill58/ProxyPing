@@ -12,10 +12,19 @@ protocol:
   message: "&aWelcome there (%online%/%maxplayer%)"
   protocol_id: 1
 
-# Virtual max player (Don't change the bungee config)
-max_players:
-  enable: true
-  amount: 400
+# Edit value about players amount
+players:
+  # Virtual max player (Don't change the bungee config)
+  max:
+    enable: true
+    amount: 400
+
+  # Edit the amount of online players
+  online:
+    enable: false
+    # A mathemathic expression to calculate the player amount
+    # %online% will be replaced by the real amount of player.
+    calculation: "%online% * 2"
 
 # Text lines showed when you put your mouse hover the protocol, you see:
 # http://prntscr.com/suu9rd
