@@ -12,6 +12,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.plugin.PluginManager;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
@@ -33,12 +34,18 @@ public class ProxyPing extends Plugin implements Listener {
 	@Override
 	public void onEnable() {
 		instance = this;
+		load();
+		PluginManager pm = getProxy().getPluginManager();
+		pm.registerListener(this, this);
+		pm.registerCommand(this, new ProxyPingCommand());
+	}
+	
+	public void load() {
 		try {
 			config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(Config.loadConfig("config.yml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		getProxy().getPluginManager().registerListener(this, this);
 	}
 
 	@EventHandler
