@@ -34,7 +34,7 @@ public class Config {
 
 	public static void saveConfig() {
 		try {
-			ConfigurationProvider.getProvider(YamlConfiguration.class).save(ProxyPing.CONF,
+			ConfigurationProvider.getProvider(YamlConfiguration.class).save(ProxyPing.getInstance().getConfig(),
 					new File(ProxyPing.getInstance().getDataFolder(), "config.yml"));
 		} catch (IOException e) {
 			e.printStackTrace();

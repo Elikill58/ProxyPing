@@ -19,25 +19,26 @@ import net.md_5.bungee.event.EventHandler;
 
 public class ProxyPing extends Plugin implements Listener {
 
-	public static Configuration CONF;
+	private Configuration config;
 	private static ProxyPing instance;
 
 	public static ProxyPing getInstance() {
 		return instance;
 	}
-	
-	private int maxPlayers;
+
+	public Configuration getConfig() {
+		return config;
+	}
 
 	@Override
 	public void onEnable() {
 		instance = this;
 		try {
-			CONF = ConfigurationProvider.getProvider(YamlConfiguration.class).load(Config.loadConfig("config.yml"));
+			config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(Config.loadConfig("config.yml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		getProxy().getPluginManager().registerListener(this, this);
-		maxPlayers = CONF.getInt("max_players");
 	}
 
 	@EventHandler
@@ -45,28 +46,37 @@ public class ProxyPing extends Plugin implements Listener {
 		if (e.getResponse() == null)
 			return;
 		ServerPing ping = e.getResponse();
-        ServerPing.Players playerPing = ping.getPlayers();
-        
-		List<String> sampleMsg = CONF.getStringList("Sample");
-        ServerPing.PlayerInfo[] sample = new ServerPing.PlayerInfo[sampleMsg.size()];
-        for (int i = 0; i < sample.length; i++)
-            sample[i] = new ServerPing.PlayerInfo(Utils.applyColorCodes(placeHolders(sampleMsg.get(i))), UUID.fromString("0-0-0-0-0"));
-        playerPing.setSample(sample);
-        playerPing.setMax(maxPlayers);
-        ping.setPlayers(playerPing);
-        
-		ping.setDescriptionComponent(new TextComponent(getRandomDescription()));
-		ping.setVersion(new Protocol(Utils.applyColorCodes(placeHolders(CONF.getString("protocol"))), 1));
+		ServerPing.Players playerPing = ping.getPlayers();
+
+		if (config.getBoolean("sample.enable", true)) {
+			List<String> sampleMsg = config.getStringList("sample.list");
+			ServerPing.PlayerInfo[] sample = new ServerPing.PlayerInfo[sampleMsg.size()];
+			for (int i = 0; i < sample.length; i++)
+				sample[i] = new ServerPing.PlayerInfo(Utils.applyColorCodes(placeHolders(sampleMsg.get(i))),
+						UUID.fromString("0-0-0-0-0"));
+			playerPing.setSample(sample);
+		}
+		if (config.getBoolean("max_players.enable", true))
+			playerPing.setMax(config.getInt("max_players.amount", 400));
+		ping.setPlayers(playerPing);
+
+		if (config.getBoolean("motd.enable", true))
+			ping.setDescriptionComponent(new TextComponent(getRandomDescription()));
+		if (config.getBoolean("protocol.enable", true))
+			ping.setVersion(new Protocol(Utils.applyColorCodes(placeHolders(config.getString("protocol.message"))),
+					config.getInt("protocol.protocol_id", 1)));
 		e.setResponse(ping);
 	}
-	
+
 	public String getRandomDescription() {
-	    List<String> list = CONF.getStringList("motd");
-	    return Utils.applyColorCodes(placeHolders(list.get(new Random().nextInt(list.size()))));
+		List<String> list = config.getStringList("motd");
+		return Utils.applyColorCodes(placeHolders(list.get(new Random().nextInt(list.size()))));
 	}
-	
+
 	public String placeHolders(String s) {
-		return s.replaceAll("%maxplayer%", String.valueOf(maxPlayers)).replaceAll("%maxplayers%", String.valueOf(maxPlayers))
-					.replaceAll("%online%", String.valueOf(ProxyServer.getInstance().getPlayers().size()));
+		int maxPlayers = config.getInt("max_players.amount", 400);
+		return s.replaceAll("%maxplayer%", String.valueOf(maxPlayers))
+				.replaceAll("%maxplayers%", String.valueOf(maxPlayers))
+				.replaceAll("%online%", String.valueOf(ProxyServer.getInstance().getPlayers().size()));
 	}
 }
