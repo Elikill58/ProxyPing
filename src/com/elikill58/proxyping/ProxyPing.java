@@ -83,7 +83,7 @@ public class ProxyPing extends Plugin implements Listener {
 	}
 
 	public String getRandomDescription() {
-		List<String> list = config.getStringList("motd");
+		List<String> list = config.getStringList("motd.list");
 		return Utils.applyColorCodes(placeHolders(list.get(new Random().nextInt(list.size()))));
 	}
 
