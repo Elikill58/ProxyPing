@@ -69,7 +69,7 @@ public class ProxyPing extends Plugin implements Listener {
 			playerPing.setMax(config.getInt("players.max.amount", 400));
 		if(config.getBoolean("players.online.enable", false)) {
 			double online = new Expression(config.getString("players.online.calculation", "%online%")
-					.replaceAll("%online%", String.valueOf(getProxy().getPlayers().size()))).calculate();
+					.replace("%online%", String.valueOf(getProxy().getPlayers().size()))).calculate();
 			playerPing.setOnline((int) online);
 		}
 		ping.setPlayers(playerPing);
@@ -89,8 +89,8 @@ public class ProxyPing extends Plugin implements Listener {
 
 	public String placeHolders(String s) {
 		int maxPlayers = config.getInt("max_players.amount", 400);
-		return s.replaceAll("%maxplayer%", String.valueOf(maxPlayers))
-				.replaceAll("%maxplayers%", String.valueOf(maxPlayers))
-				.replaceAll("%online%", String.valueOf(ProxyServer.getInstance().getPlayers().size()));
+		return s.replace("%maxplayer%", String.valueOf(maxPlayers))
+				.replace("%maxplayers%", String.valueOf(maxPlayers))
+				.replace("%online%", String.valueOf(ProxyServer.getInstance().getPlayers().size()));
 	}
 }
