@@ -27,6 +27,7 @@ public class Utils {
 				.replaceAll("&n", ChatColor.UNDERLINE.toString()).replaceAll("&k", ChatColor.MAGIC.toString());
 	}
 
+	@SuppressWarnings("deprecation")
 	public static TextComponent createMessage(String message, ChatColor color, boolean bold,
 			net.md_5.bungee.api.chat.HoverEvent.Action hoverAction, String hoverMsg,
 			net.md_5.bungee.api.chat.ClickEvent.Action clickAction, String clickMsg, String... extras) {
@@ -41,6 +42,7 @@ public class Utils {
 		return tc;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static TextComponent createMessage(String message, ChatColor color, boolean bold,
 			net.md_5.bungee.api.chat.HoverEvent.Action hoverAction, String hoverMsg, String... extras) {
 		TextComponent tc = new TextComponent(message);
