@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import org.mariuszgromada.math.mxparser.Expression;
-
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.ServerPing.Protocol;
@@ -68,8 +66,8 @@ public class ProxyPing extends Plugin implements Listener {
 		if (config.getBoolean("players.max.enable", true))
 			playerPing.setMax(config.getInt("players.max.amount", 400));
 		if(config.getBoolean("players.online.enable", false)) {
-			double online = new Expression(config.getString("players.online.calculation", "%online%")
-					.replace("%online%", String.valueOf(getProxy().getPlayers().size()))).calculate();
+			double online = Maths.eval(config.getString("players.online.calculation", "%online%")
+					.replace("%online%", String.valueOf(getProxy().getPlayers().size())));
 			playerPing.setOnline((int) online);
 		}
 		ping.setPlayers(playerPing);
